@@ -24,7 +24,6 @@ import com.study.walkingclassassignment.domain.plan.dto.responsedto.PlanResponse
 import com.study.walkingclassassignment.domain.plan.dto.responsedto.PlanUpdateResponseDto;
 import com.study.walkingclassassignment.domain.plan.service.PlanService;
 import com.study.walkingclassassignment.domain.user.dto.UserResponseDto;
-import com.study.walkingclassassignment.domain.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -53,7 +52,7 @@ public class PlanController {
 
 	/**
 	 * 전체 일정 조회
-	 * TODO loginUser는 어디에 쓰지..?
+	 * TODO loginUser는 어디에 쓰지..? -> planId로 가져온 정보랑 loginUser id랑 같은지 비교하려고 쓰나?
 	 * @param loginUser
 	 * @return List<FindAllPlanResponseDto>
 	 */
