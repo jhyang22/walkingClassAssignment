@@ -17,6 +17,8 @@ public class FindAllPlanResponseDto {
 
 	private final String content;
 
+	private final Long count;
+
 	private final LocalDateTime updatedAt;
 
 	private FindAllPlanResponseDto (Plan plan) {
@@ -24,6 +26,7 @@ public class FindAllPlanResponseDto {
 		this.userId = plan.getUser().getId();
 		this.title = plan.getTitle();
 		this.content = plan.getContent();
+		this.count = plan.getCommentList().stream().count(); // 모든 List에는 페이징을 적용해야 한다
 		this.updatedAt = plan.getUpdatedAt();
 	}
 
