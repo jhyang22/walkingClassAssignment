@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpSession;
 
 public class LoginFilter implements Filter {
 
-	private static final String[] WHITE_LIST = {"/", "/login", "/signin"};
+	private static final String[] WHITE_LIST = {"/", "/login", "/signup"};
 
 	@Override
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws
@@ -34,6 +34,7 @@ public class LoginFilter implements Filter {
 			}
 		}
 
+		filterChain.doFilter(servletRequest, servletResponse);
 	}
 
 	private boolean isWhiteList(String requestURI) {
