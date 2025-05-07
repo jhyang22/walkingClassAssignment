@@ -7,7 +7,10 @@ import com.study.walkingclassassignment.common.exception.ErrorCode;
 import com.study.walkingclassassignment.domain.plan.entity.Plan;
 
 public interface PlanRepository extends JpaRepository<Plan, Long> {
+
 	default Plan findByIdOrElseThrow(Long planId) {
 		return findById(planId).orElseThrow(() -> new CustomException(ErrorCode.PLAN_NOT_FOUND));
 	}
+
+	Plan findByUserId(Long id);
 }

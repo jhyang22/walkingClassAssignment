@@ -13,7 +13,6 @@ import com.study.walkingclassassignment.domain.plan.dto.responsedto.PlanResponse
 import com.study.walkingclassassignment.domain.plan.dto.responsedto.PlanUpdateResponseDto;
 import com.study.walkingclassassignment.domain.plan.entity.Plan;
 import com.study.walkingclassassignment.domain.plan.repository.PlanRepository;
-import com.study.walkingclassassignment.domain.user.dto.UserResponseDto;
 import com.study.walkingclassassignment.domain.user.entity.User;
 import com.study.walkingclassassignment.domain.user.repository.UserRepository;
 
@@ -30,14 +29,14 @@ public class PlanServiceImpl implements PlanService{
 	/**
 	 * 일정 저장
 	 * @param dto
-	 * @param loginUser
+	 * @param loginUserId
 	 * @return PlanCreateResponseDto
 	 */
 	@Transactional
 	@Override
-	public PlanCreateResponseDto savePlan(PlanCreateRequestDto dto, UserResponseDto loginUser) {
+	public PlanCreateResponseDto savePlan(PlanCreateRequestDto dto, Long loginUserId) {
 
-		User foundUser = userRepository.findByIdOrElseThrow(loginUser.getId());
+		User foundUser = userRepository.findByIdOrElseThrow(loginUserId);
 
 		Plan plan = new Plan(foundUser, dto.getTitle(), dto.getContent());
 
@@ -48,12 +47,11 @@ public class PlanServiceImpl implements PlanService{
 
 	/**
 	 * 전체 일정 조회
-	 * TODO loginUser는 어디에 쓰지..?
-	 * @param loginUser
+	 * @param loginUserId
 	 * @return List<FindAllPlanResponseDto>
 	 */
 	@Override
-	public List<FindAllPlanResponseDto> findAll(UserResponseDto loginUser) {
+	public List<FindAllPlanResponseDto> findAll(Long loginUserId) {
 
 		List<Plan> findAllPlan = planRepository.findAll();
 
@@ -64,11 +62,11 @@ public class PlanServiceImpl implements PlanService{
 	 * 단일 일정 조회 (상세 조회)
 	 * 댓글 리스트 함께 출력
 	 * @param planId
-	 * @param loginUser
+	 * @param loginUserId
 	 * @return PlanResponseDto
 	 */
 	@Override
-	public PlanResponseDto findById(Long planId, UserResponseDto loginUser) {
+	public PlanResponseDto findById(Long planId, Long loginUserId) {
 
 		Plan findPlanById = planRepository.findByIdOrElseThrow(planId);
 
@@ -77,15 +75,14 @@ public class PlanServiceImpl implements PlanService{
 
 	/**
 	 * 일정 수정
-	 * TODO loginUser는 어디에 쓰지..?
 	 * @param planId
 	 * @param dto
-	 * @param loginUser
+	 * @param loginUserId
 	 * @return PlanUpdateResponseDto
 	 */
 	@Transactional
 	@Override
-	public PlanUpdateResponseDto updatePlan(Long planId, PlanUpdateRequestDto dto, UserResponseDto loginUser) {
+	public PlanUpdateResponseDto updatePlan(Long planId, PlanUpdateRequestDto dto, Long loginUserId) {
 
 		Plan findPlanById = planRepository.findByIdOrElseThrow(planId);
 
@@ -96,14 +93,13 @@ public class PlanServiceImpl implements PlanService{
 
 	/**
 	 * 일정 삭제
-	 * TODO loginUser는 어디에 쓰지..?
 	 * @param planId
-	 * @param loginUser
+	 * @param loginUserId
 	 * @return
 	 */
 	@Transactional
 	@Override
-	public PlanDeleteResponseDto deletePlan(Long planId, UserResponseDto loginUser) {
+	public PlanDeleteResponseDto deletePlan(Long planId, Long loginUserId) {
 
 		Plan findPlanById = planRepository.findByIdOrElseThrow(planId);
 

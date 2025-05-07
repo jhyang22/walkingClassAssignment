@@ -4,8 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.study.walkingclassassignment.domain.comment.dto.CommentResponseDto;
-import com.study.walkingclassassignment.domain.comment.entity.Comment;
+import com.study.walkingclassassignment.domain.comment.dto.responsedto.CommentResponseDto;
 import com.study.walkingclassassignment.domain.plan.entity.Plan;
 
 import lombok.Builder;

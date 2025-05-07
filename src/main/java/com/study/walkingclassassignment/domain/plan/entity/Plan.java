@@ -1,5 +1,6 @@
 package com.study.walkingclassassignment.domain.plan.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.study.walkingclassassignment.common.entity.BaseEntity;
@@ -34,7 +35,7 @@ public class Plan extends BaseEntity {
 	private String content;
 
 	@OneToMany(mappedBy = "plan")
-	private List<Comment> commentList;
+	private List<Comment> commentList = new ArrayList<>();
 
 	public Plan(User user, String title, String content) {
 		this.user = user;

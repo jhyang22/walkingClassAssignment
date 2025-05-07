@@ -23,12 +23,11 @@ import com.study.walkingclassassignment.domain.plan.dto.responsedto.PlanDeleteRe
 import com.study.walkingclassassignment.domain.plan.dto.responsedto.PlanResponseDto;
 import com.study.walkingclassassignment.domain.plan.dto.responsedto.PlanUpdateResponseDto;
 import com.study.walkingclassassignment.domain.plan.service.PlanService;
-import com.study.walkingclassassignment.domain.user.dto.UserResponseDto;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/plans")
+@RequestMapping("/api/plans")
 @RequiredArgsConstructor
 public class PlanController {
 
@@ -37,84 +36,83 @@ public class PlanController {
 	/**
 	 * 일정 저장
 	 * @param dto
-	 * @param loginUser
+	 * @param loginUserId
 	 * @return PlanCreateResponseDto
 	 */
 	@PostMapping
 	public ResponseEntity<PlanCreateResponseDto> savePlan(
 		@RequestBody PlanCreateRequestDto dto,
-		@SessionAttribute(name = Const.LOGIN_USER, required = false) UserResponseDto loginUser
+		@SessionAttribute(name = Const.LOGIN_USER, required = false) Long loginUserId
 	) {
-		PlanCreateResponseDto savedPlan = planService.savePlan(dto, loginUser);
+		PlanCreateResponseDto savedPlan = planService.savePlan(dto, loginUserId);
 
 		return new ResponseEntity<>(savedPlan, HttpStatus.CREATED);
 	}
 
 	/**
 	 * 전체 일정 조회
-	 * TODO loginUser는 어디에 쓰지..? -> planId로 가져온 정보랑 loginUser id랑 같은지 비교하려고 쓰나?
-	 * @param loginUser
+	 * 댓글 개수도 함께 조회된다. (dto에서 stream.count() 사용)
+	 * @param loginUserId
 	 * @return List<FindAllPlanResponseDto>
 	 */
 	@GetMapping
 	public ResponseEntity<List<FindAllPlanResponseDto>> findAll(
-		@SessionAttribute(name = Const.LOGIN_USER, required = false) UserResponseDto loginUser
+		@SessionAttribute(name = Const.LOGIN_USER, required = false) Long loginUserId
 	) {
-		List<FindAllPlanResponseDto> findAllPlan = planService.findAll(loginUser);
+		List<FindAllPlanResponseDto> findAllPlan = planService.findAll(loginUserId);
 
 		return new ResponseEntity<>(findAllPlan, HttpStatus.OK);
 	}
 
 	/**
 	 * 단일 일정 조회
+	 * TODO 댓글 조회 시 작성일 기준 오름차순(오래된 순) 정렬
 	 * 댓글 리스트 함께 출력
 	 * @param planId
-	 * @param loginUser
+	 * @param loginUserId
 	 * @return PlanResponseDto
 	 */
 	@GetMapping("/{planId}")
 	public ResponseEntity<PlanResponseDto> findById(
 		@PathVariable Long planId,
-		@SessionAttribute(name = Const.LOGIN_USER, required = false) UserResponseDto loginUser
+		@SessionAttribute(name = Const.LOGIN_USER, required = false) Long loginUserId
 	) {
-		PlanResponseDto findPlanById = planService.findById(planId, loginUser);
+		PlanResponseDto findPlanById = planService.findById(planId, loginUserId);
 
 		return new ResponseEntity<>(findPlanById, HttpStatus.OK);
 	}
 
 	/**
 	 * 일정 수정
-	 * TODO loginUser는 어디에 쓰지..?
 	 * @param planId
 	 * @param dto
-	 * @param loginUser
+	 * @param loginUserId
 	 * @return
 	 */
 	@PatchMapping("/{planId}")
 	public ResponseEntity<PlanUpdateResponseDto> updatePlan(
 		@PathVariable Long planId,
 		@RequestBody PlanUpdateRequestDto dto,
-		@SessionAttribute(name = Const.LOGIN_USER, required = false) UserResponseDto loginUser
+		@SessionAttribute(name = Const.LOGIN_USER, required = false) Long loginUserId
 	) {
-		PlanUpdateResponseDto updatedPlan = planService.updatePlan(planId, dto, loginUser);
+		PlanUpdateResponseDto updatedPlan = planService.updatePlan(planId, dto, loginUserId);
 
 		return new ResponseEntity<>(updatedPlan, HttpStatus.OK);
 	}
 
 	/**
 	 * 일정 삭제
-	 * TODO loginUser는 어디에 쓰지..?
 	 * @param planId
-	 * @param loginUser
+	 * @param loginUserId
 	 * @return
 	 */
 	@DeleteMapping("/{planId}")
 	public ResponseEntity<PlanDeleteResponseDto> deletePlan(
 		@PathVariable Long planId,
-		@SessionAttribute(name = Const.LOGIN_USER, required = false) UserResponseDto loginUser
+		@SessionAttribute(name = Const.LOGIN_USER, required = false) Long loginUserId
 	) {
 
-		PlanDeleteResponseDto deletedPlan = planService.deletePlan(planId, loginUser);
+		PlanDeleteResponseDto deletedPlan = planService.deletePlan(planId, loginUserId);
 
 		return new ResponseEntity<>(deletedPlan, HttpStatus.OK);
 	}
