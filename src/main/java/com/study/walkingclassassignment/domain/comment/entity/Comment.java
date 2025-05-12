@@ -38,6 +38,8 @@ public class Comment extends BaseEntity {
 
 	private Long parentCommentId;
 
+	private boolean isDeleted = false;
+
 	public Comment(User user, Plan plan, String content) {
 		this.user = user;
 		this.plan = plan;
@@ -58,5 +60,10 @@ public class Comment extends BaseEntity {
 	 */
 	public void specifyParentId (Long id) {
 		this.parentCommentId = id;
+	}
+
+	public void deleteComment() {
+		this.isDeleted = true;
+		this.content = "삭제된 댓글입니다";
 	}
 }

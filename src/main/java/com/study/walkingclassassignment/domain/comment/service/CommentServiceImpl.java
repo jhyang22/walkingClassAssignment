@@ -204,7 +204,7 @@ public class CommentServiceImpl implements CommentService{
 			throw new CustomException(ErrorCode.INVALID_USER);
 		}
 
-		commentRepository.deleteById(commentId);
+		findComment.deleteComment();
 
 		return CommentDeleteResponseDto.fromComment(findComment);
 	}
