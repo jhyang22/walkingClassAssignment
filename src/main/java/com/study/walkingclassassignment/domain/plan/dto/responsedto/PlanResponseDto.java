@@ -44,6 +44,7 @@ public class PlanResponseDto {
 			.content(plan.getContent())
 			.updatedAt(plan.getUpdatedAt())
 			.commentList(plan.getCommentList().stream()
+				.filter(c -> c.getParentCommentId() == null)
 				.map(CommentResponseDto::fromComment)
 				.collect(Collectors.toList()))
 			.build();

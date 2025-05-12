@@ -66,7 +66,6 @@ public class PlanController {
 
 	/**
 	 * 단일 일정 조회
-	 * TODO 댓글 조회 시 작성일 기준 오름차순(오래된 순) 정렬
 	 * 댓글 리스트 함께 출력
 	 * @param planId
 	 * @param loginUserId
