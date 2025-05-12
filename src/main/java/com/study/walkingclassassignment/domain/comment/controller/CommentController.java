@@ -109,26 +109,26 @@ public class CommentController {
 		return new ResponseEntity<>(deletedComment, HttpStatus.OK);
 	}
 
-	/**
-	 * 대댓글 저장
-	 * 1 depth만 허용
-	 * @param planId
-	 * @param commentId
-	 * @param dto
-	 * @param loginUserId
-	 * @return
-	 */
-	@PostMapping("/{commentId}/recomments")
-	public ResponseEntity<ReCommentCreateResponseDto> saveReComment (
-		@PathVariable Long planId,
-		@PathVariable Long commentId,
-		@RequestBody ReCommentCreateRequestDto dto,
-		@SessionAttribute(name = Const.LOGIN_USER, required = false) Long loginUserId
-	) {
-
-		ReCommentCreateResponseDto savedReComment = commentService.saveReComment(planId, commentId, dto,
-			loginUserId);
-
-		return new ResponseEntity<>(savedReComment, HttpStatus.CREATED);
-	}
+	// /**
+	//  * 대댓글 저장
+	//  * 1 depth만 허용
+	//  * @param planId
+	//  * @param commentId
+	//  * @param dto
+	//  * @param loginUserId
+	//  * @return
+	//  */
+	// @PostMapping("/{commentId}/recomments")
+	// public ResponseEntity<ReCommentCreateResponseDto> saveReComment (
+	// 	@PathVariable Long planId,
+	// 	@PathVariable Long commentId,
+	// 	@RequestBody ReCommentCreateRequestDto dto,
+	// 	@SessionAttribute(name = Const.LOGIN_USER, required = false) Long loginUserId
+	// ) {
+	//
+	// 	ReCommentCreateResponseDto savedReComment = commentService.saveReComment(planId, commentId, dto,
+	// 		loginUserId);
+	//
+	// 	return new ResponseEntity<>(savedReComment, HttpStatus.CREATED);
+	// }
 }

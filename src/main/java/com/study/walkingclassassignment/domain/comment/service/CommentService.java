@@ -20,5 +20,5 @@ public interface CommentService {
 
 	CommentDeleteResponseDto delete(Long planId, Long commentId, Long loginUserId);
 
-	ReCommentCreateResponseDto saveReComment(Long PlanId, Long commentId, ReCommentCreateRequestDto dto, Long loginUserId);
+	// ReCommentCreateResponseDto saveReComment(Long PlanId, Long commentId, ReCommentCreateRequestDto dto, Long loginUserId);
 }

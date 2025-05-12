@@ -1,6 +1,5 @@
 package com.study.walkingclassassignment.domain.comment.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +35,9 @@ public class CommentServiceImpl implements CommentService{
 	private final PlanRepository planRepository;
 
 	/**
-	 * 댓글 생성
+	 * 댓글 및 대댓글 생성
+	 * 대댓글의 경우 1 depth가 넘어갈 경우 ONE_DEPTH_ONLY 예외처리
+	 * @param planId
 	 * @param dto
 	 * @param loginUserId
 	 * @return CommentCreateResponseDto
@@ -46,6 +47,8 @@ public class CommentServiceImpl implements CommentService{
 	public CommentCreateResponseDto saveComment(Long planId, CommentCreateRequestDto dto, Long loginUserId) {
 
 		// commentId가 없는데 어떻게 찾을까?
+		// 1. pathVariable null 가능! 하게 하등가 -> 복수형 오는 곳이 비는데 restful한건가?
+		// 2. requestBody로 받아오등가
 
 		Plan findPlan = planRepository.findByIdOrElseThrow(planId);
 
@@ -53,8 +56,19 @@ public class CommentServiceImpl implements CommentService{
 
 		Comment comment = new Comment(findUserById, findPlan, dto.getContent());
 
-		if (comment.getParentCommentId() != null) {
-			throw new CustomException(ErrorCode.ONE_DEPTH_ONLY);
+		// 대댓글
+		if(dto.getCommentId() != null) {
+			Comment findComment = commentRepository.findByPlan_IdAndIdOrElseThrow(planId, dto.getCommentId());
+
+			if(findComment.getParentCommentId() != null) {
+				throw new CustomException(ErrorCode.ONE_DEPTH_ONLY);
+			}
+
+			comment.specifyParentId(dto.getCommentId());
+
+			Comment savedReComment = commentRepository.save(comment);
+
+			return CommentCreateResponseDto.fromComment(savedReComment);
 		}
 
 		commentRepository.save(comment);
@@ -62,45 +76,45 @@ public class CommentServiceImpl implements CommentService{
 		return CommentCreateResponseDto.fromComment(comment);
 	}
 
-	/**
-	 * 대댓글 저장
-	 * 댓글이 없을 경우 COMMENT_NOT_FOUND 예외처리
-	 * 1 depth가 넘어갈 경우 ONE_DEPTH_ONLY 예외처리
-	 * 댓글하고 합치기 어차피 parentCommentId가 null이냐 아니냐로 갈림
-	 * @param commentId
-	 * @param dto
-	 * @param loginUserId
-	 * @return ReCommentCreateResponseDto
-	 */
-	@Transactional
-	@Override
-	public ReCommentCreateResponseDto saveReComment(Long planId, Long commentId, ReCommentCreateRequestDto dto,
-		Long loginUserId) {
-
-		Comment findComment = commentRepository.findByPlan_IdAndIdOrElseThrow(planId, commentId);
-
-		// 댓글이 없을 경우 예외처리
-		if(findComment == null) {
-			throw new CustomException(ErrorCode.COMMENT_NOT_FOUND);
-		}
-
-		// 대대댓글의 경우 예외처리
-		if(findComment.getParentCommentId() != null) {
-			throw new CustomException(ErrorCode.ONE_DEPTH_ONLY);
-		}
-
-		User findUserById = userRepository.findByIdOrElseThrow(loginUserId);
-
-		Plan findPlan = planRepository.findByIdOrElseThrow(planId);
-
-		Comment reComment = new Comment(findUserById, findPlan, dto.getContent());
-
-		reComment.specifyParentId(commentId);
-
-		Comment savedReComment = commentRepository.save(reComment);
-
-		return ReCommentCreateResponseDto.fromComment(savedReComment);
-	}
+	// /**
+	//  * 대댓글 저장
+	//  * 댓글이 없을 경우 COMMENT_NOT_FOUND 예외처리
+	//  * 1 depth가 넘어갈 경우 ONE_DEPTH_ONLY 예외처리
+	//  * 댓글하고 합치기 어차피 parentCommentId가 null이냐 아니냐로 갈림
+	//  * @param commentId
+	//  * @param dto
+	//  * @param loginUserId
+	//  * @return ReCommentCreateResponseDto
+	//  */
+	// @Transactional
+	// @Override
+	// public ReCommentCreateResponseDto saveReComment(Long planId, Long commentId, ReCommentCreateRequestDto dto,
+	// 	Long loginUserId) {
+	//
+	// 	Comment findComment = commentRepository.findByPlan_IdAndIdOrElseThrow(planId, commentId);
+	//
+	// 	// 댓글이 없을 경우 예외처리
+	// 	if(findComment == null) {
+	// 		throw new CustomException(ErrorCode.COMMENT_NOT_FOUND);
+	// 	}
+	//
+	// 	// 대대댓글의 경우 예외처리
+	// 	if(findComment.getParentCommentId() != null) {
+	// 		throw new CustomException(ErrorCode.ONE_DEPTH_ONLY);
+	// 	}
+	//
+	// 	User findUserById = userRepository.findByIdOrElseThrow(loginUserId);
+	//
+	// 	Plan findPlan = planRepository.findByIdOrElseThrow(planId);
+	//
+	// 	Comment reComment = new Comment(findUserById, findPlan, dto.getContent());
+	//
+	// 	reComment.specifyParentId(commentId);
+	//
+	// 	Comment savedReComment = commentRepository.save(reComment);
+	//
+	// 	return ReCommentCreateResponseDto.fromComment(savedReComment);
+	// }
 
 
 	/**
@@ -120,6 +134,7 @@ public class CommentServiceImpl implements CommentService{
 		// Order by Created_At DESC -> Order By parentCommentId
 		List<Comment> findAllComment = commentRepository.findAllByPlan_Id(planId);
 
+		// commentId를 key, CommentResponseDto를 value로 가지는 Map 생성
 		Map<Long, CommentResponseDto> commentMap = new HashMap<>();
 
 		// commentMap에 데이터 넣는 과정
@@ -128,6 +143,8 @@ public class CommentServiceImpl implements CommentService{
 		}
 
 		// 자식들을 모두 parent에 있는 reCommentList에 삽입하는 과정
+		// 만약 댓글만 삭제하고 대댓글은 존재한다면 여기서 에러가 나는 것 같다
+		// 소프트 딜리트 해줘야 하나?
 		for(Comment c : findAllComment) {
 			if(c.getParentCommentId() != null) {
 				CommentResponseDto parentDto = commentMap.get(c.getParentCommentId());
@@ -191,7 +208,4 @@ public class CommentServiceImpl implements CommentService{
 
 		return CommentDeleteResponseDto.fromComment(findComment);
 	}
-
-
-
 }

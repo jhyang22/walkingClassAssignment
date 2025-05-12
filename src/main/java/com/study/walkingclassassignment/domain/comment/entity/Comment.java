@@ -1,7 +1,5 @@
 package com.study.walkingclassassignment.domain.comment.entity;
 
-import java.util.List;
-
 import com.study.walkingclassassignment.common.entity.BaseEntity;
 import com.study.walkingclassassignment.domain.comment.dto.requestdto.CommentUpdateRequestDto;
 import com.study.walkingclassassignment.domain.plan.entity.Plan;
