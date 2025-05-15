@@ -17,6 +17,12 @@
 ---
 # API 명세서
 
+![image](https://github.com/user-attachments/assets/d933eec0-d733-4b84-a846-9443bcb5ffd7)
+![image](https://github.com/user-attachments/assets/87fa32a0-3fbf-4900-88f8-abea2fb1acb1)
+![image](https://github.com/user-attachments/assets/7a432a14-1c9b-4cb6-b643-343e2071a47b)
+![image](https://github.com/user-attachments/assets/a55af8e2-9c29-4371-98ee-b4b2e7d0e26f)
+
+
 ---
 # 구현 기능
 
@@ -66,3 +72,40 @@
 # 트러블 슈팅
 - 관련 내용은 블로그를 참고해주시기 바랍니다
   - https://couchpo.tistory.com/
+ 
+# API 동작 캡처본
+## 회원 가입
+![image](https://github.com/user-attachments/assets/f6bab845-7db9-4dcf-9440-d5e9437a7856)
+
+## 로그인
+![image](https://github.com/user-attachments/assets/1687a0d0-843c-48f4-92c9-bdf17c1bfac6)
+
+## 일정 생성
+![image](https://github.com/user-attachments/assets/57b01b6b-ccd7-4481-af37-64e655a0d0f9)
+
+## 전체 일정 조회
+![image](https://github.com/user-attachments/assets/f0a89fa1-9731-4675-bace-00d74f4cbf43)
+
+## 단일 일정 조회
+![image](https://github.com/user-attachments/assets/dee9ad4b-af5e-4aaa-9ad5-ff0a0b52ec41)
+
+## 일정 수정
+![image](https://github.com/user-attachments/assets/bb293b31-a43b-44a3-a386-60217f059e55)
+
+## 일정 삭제
+![image](https://github.com/user-attachments/assets/90b8e06e-a93d-4537-9b48-a228df4d0609)
+
+## 댓글 생성
+![image](https://github.com/user-attachments/assets/226c600b-a411-4ec8-9142-226c86e78af5)
+
+## 대댓글 생성
+![image](https://github.com/user-attachments/assets/e314a6c3-390a-40bf-96f6-0cf13fd82dc3)
+
+## 댓글 및 대댓글 조회
+![image](https://github.com/user-attachments/assets/ac3d982b-8c6f-41c1-aec7-58919a47a5cb)
+
+## 댓글 및 대댓글 수정
+![image](https://github.com/user-attachments/assets/21439718-88f6-4735-a916-b1e0e01c2529)
+
+## 댓글 및 대댓글 삭제
+![image](https://github.com/user-attachments/assets/ec5ec49a-7e9a-47d6-859e-39266c0b154f)
