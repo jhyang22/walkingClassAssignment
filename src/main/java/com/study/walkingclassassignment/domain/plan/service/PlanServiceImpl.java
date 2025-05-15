@@ -54,9 +54,6 @@ public class PlanServiceImpl implements PlanService{
 	@Override
 	public Page<FindAllPlanResponseDto> findAll(Pageable pageable, Long loginUserId) {
 
-		// Page<Plan> findAllPlan = planRepository.findAll(pageable);
-
-		// return findAllPlan.map(FindAllPlanResponseDto::fromPlan);
 		return planRepository.findAllPlanWithCountComment(pageable);
 	}
 
