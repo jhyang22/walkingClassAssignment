@@ -2,11 +2,11 @@ package com.study.walkingclassassignment.domain.plan.dto.responsedto;
 
 import java.time.LocalDateTime;
 
-import com.study.walkingclassassignment.domain.plan.entity.Plan;
-
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
+@RequiredArgsConstructor
 public class FindAllPlanResponseDto {
 
 	private final Long id;
@@ -17,17 +17,7 @@ public class FindAllPlanResponseDto {
 
 	private final String content;
 
+	private final Long commentCount;
+
 	private final LocalDateTime updatedAt;
-
-	private FindAllPlanResponseDto (Plan plan) {
-		this.id = plan.getId();
-		this.userId = plan.getUser().getId();
-		this.title = plan.getTitle();
-		this.content = plan.getContent();
-		this.updatedAt = plan.getUpdatedAt();
-	}
-
-	public static FindAllPlanResponseDto fromPlan(Plan plan) {
-		return new FindAllPlanResponseDto(plan);
-	}
 }

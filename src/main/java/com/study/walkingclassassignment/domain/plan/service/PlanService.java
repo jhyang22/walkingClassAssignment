@@ -1,6 +1,7 @@
 package com.study.walkingclassassignment.domain.plan.service;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.study.walkingclassassignment.domain.plan.dto.requestdto.PlanCreateRequestDto;
 import com.study.walkingclassassignment.domain.plan.dto.requestdto.PlanUpdateRequestDto;
@@ -9,16 +10,15 @@ import com.study.walkingclassassignment.domain.plan.dto.responsedto.PlanCreateRe
 import com.study.walkingclassassignment.domain.plan.dto.responsedto.PlanDeleteResponseDto;
 import com.study.walkingclassassignment.domain.plan.dto.responsedto.PlanResponseDto;
 import com.study.walkingclassassignment.domain.plan.dto.responsedto.PlanUpdateResponseDto;
-import com.study.walkingclassassignment.domain.user.dto.UserResponseDto;
 
 public interface PlanService {
-	PlanCreateResponseDto savePlan(PlanCreateRequestDto dto, UserResponseDto loginUser);
+	PlanCreateResponseDto savePlan(PlanCreateRequestDto dto, Long loginUserId);
 
-	List<FindAllPlanResponseDto> findAll(UserResponseDto loginUser);
+	Page<FindAllPlanResponseDto> findAll(Pageable pageable, Long loginUserId);
 
-	PlanResponseDto findById(Long planId, UserResponseDto loginUser);
+	PlanResponseDto findById(Long planId, Long loginUserId);
 
-	PlanUpdateResponseDto updatePlan(Long planId, PlanUpdateRequestDto dto, UserResponseDto loginUser);
+	PlanUpdateResponseDto updatePlan(Long planId, PlanUpdateRequestDto dto, Long loginUserId);
 
-	PlanDeleteResponseDto deletePlan(Long planId, UserResponseDto loginUser);
+	PlanDeleteResponseDto deletePlan(Long planId, Long loginUserId);
 }
