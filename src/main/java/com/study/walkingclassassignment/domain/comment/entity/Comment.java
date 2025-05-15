@@ -62,8 +62,10 @@ public class Comment extends BaseEntity {
 		this.parentCommentId = id;
 	}
 
+	/**
+	 * soft delete를 위한 메서드
+	 */
 	public void deleteComment() {
 		this.isDeleted = true;
-		this.content = "삭제된 댓글입니다";
 	}
 }
