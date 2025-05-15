@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.query.Param;
 
 import com.study.walkingclassassignment.common.exception.CustomException;
 import com.study.walkingclassassignment.common.exception.ErrorCode;
