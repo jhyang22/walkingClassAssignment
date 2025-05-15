@@ -71,7 +71,7 @@
 ---
 # 트러블 슈팅
 - 관련 내용은 블로그를 참고해주시기 바랍니다
-  - https://couchpo.tistory.com/
+  - [https://couchpo.tistory.com/](https://couchpo.tistory.com/112)
  
 # API 동작 캡처본
 ## 회원 가입
