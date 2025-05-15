@@ -1,7 +1,12 @@
 package com.study.walkingclassassignment.domain.plan.controller;
 
+import static org.springframework.data.domain.Sort.Direction.*;
+
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -51,15 +56,16 @@ public class PlanController {
 
 	/**
 	 * 전체 일정 조회
-	 * 댓글 개수도 함께 조회된다. (dto에서 stream.count() 사용)
+	 * 댓글 개수도 함께 조회된다.
 	 * @param loginUserId
 	 * @return List<FindAllPlanResponseDto>
 	 */
 	@GetMapping
-	public ResponseEntity<List<FindAllPlanResponseDto>> findAll(
+	public ResponseEntity<Page<FindAllPlanResponseDto>> findAll(
+		@PageableDefault(size = 10, direction = DESC) Pageable pageable,
 		@SessionAttribute(name = Const.LOGIN_USER, required = false) Long loginUserId
 	) {
-		List<FindAllPlanResponseDto> findAllPlan = planService.findAll(loginUserId);
+		Page<FindAllPlanResponseDto> findAllPlan = planService.findAll(pageable, loginUserId);
 
 		return new ResponseEntity<>(findAllPlan, HttpStatus.OK);
 	}

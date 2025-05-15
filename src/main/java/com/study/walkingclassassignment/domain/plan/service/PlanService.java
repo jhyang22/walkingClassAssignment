@@ -2,6 +2,9 @@ package com.study.walkingclassassignment.domain.plan.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.study.walkingclassassignment.domain.plan.dto.requestdto.PlanCreateRequestDto;
 import com.study.walkingclassassignment.domain.plan.dto.requestdto.PlanUpdateRequestDto;
 import com.study.walkingclassassignment.domain.plan.dto.responsedto.FindAllPlanResponseDto;
@@ -13,7 +16,7 @@ import com.study.walkingclassassignment.domain.plan.dto.responsedto.PlanUpdateRe
 public interface PlanService {
 	PlanCreateResponseDto savePlan(PlanCreateRequestDto dto, Long loginUserId);
 
-	List<FindAllPlanResponseDto> findAll(Long loginUserId);
+	Page<FindAllPlanResponseDto> findAll(Pageable pageable, Long loginUserId);
 
 	PlanResponseDto findById(Long planId, Long loginUserId);
 

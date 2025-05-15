@@ -1,5 +1,10 @@
 package com.study.walkingclassassignment.domain.plan.repository;
 
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.study.walkingclassassignment.common.exception.CustomException;
@@ -13,4 +18,6 @@ public interface PlanRepository extends JpaRepository<Plan, Long> {
 	}
 
 	Plan findByUserId(Long id);
+
+	Page<Plan> findAll(Pageable pageable);
 }

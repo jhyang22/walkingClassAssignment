@@ -1,7 +1,7 @@
 package com.study.walkingclassassignment.domain.plan.service;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.study.walkingclassassignment.domain.plan.dto.requestdto.PlanCreateRequestDto;
@@ -47,15 +47,16 @@ public class PlanServiceImpl implements PlanService{
 
 	/**
 	 * 전체 일정 조회
+	 * @param pageable
 	 * @param loginUserId
-	 * @return List<FindAllPlanResponseDto>
+	 * @return Page<FindAllPlanResponseDto>
 	 */
 	@Override
-	public List<FindAllPlanResponseDto> findAll(Long loginUserId) {
+	public Page<FindAllPlanResponseDto> findAll(Pageable pageable, Long loginUserId) {
 
-		List<Plan> findAllPlan = planRepository.findAll();
+		Page<Plan> findAllPlan = planRepository.findAll(pageable);
 
-		return findAllPlan.stream().map(FindAllPlanResponseDto::fromPlan).toList();
+		return findAllPlan.map(FindAllPlanResponseDto::fromPlan);
 	}
 
 	/**
