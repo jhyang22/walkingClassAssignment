@@ -46,10 +46,6 @@ public class CommentServiceImpl implements CommentService{
 	@Override
 	public CommentCreateResponseDto saveComment(Long planId, CommentCreateRequestDto dto, Long loginUserId) {
 
-		// commentId가 없는데 어떻게 찾을까?
-		// 1. pathVariable null 가능! 하게 하등가 -> 복수형 오는 곳이 비는데 restful한건가?
-		// 2. requestBody로 받아오등가
-
 		Plan findPlan = planRepository.findByIdOrElseThrow(planId);
 
 		User findUserById = userRepository.findByIdOrElseThrow(loginUserId);
@@ -76,52 +72,12 @@ public class CommentServiceImpl implements CommentService{
 		return CommentCreateResponseDto.fromComment(comment);
 	}
 
-	// /**
-	//  * 대댓글 저장
-	//  * 댓글이 없을 경우 COMMENT_NOT_FOUND 예외처리
-	//  * 1 depth가 넘어갈 경우 ONE_DEPTH_ONLY 예외처리
-	//  * 댓글하고 합치기 어차피 parentCommentId가 null이냐 아니냐로 갈림
-	//  * @param commentId
-	//  * @param dto
-	//  * @param loginUserId
-	//  * @return ReCommentCreateResponseDto
-	//  */
-	// @Transactional
-	// @Override
-	// public ReCommentCreateResponseDto saveReComment(Long planId, Long commentId, ReCommentCreateRequestDto dto,
-	// 	Long loginUserId) {
-	//
-	// 	Comment findComment = commentRepository.findByPlan_IdAndIdOrElseThrow(planId, commentId);
-	//
-	// 	// 댓글이 없을 경우 예외처리
-	// 	if(findComment == null) {
-	// 		throw new CustomException(ErrorCode.COMMENT_NOT_FOUND);
-	// 	}
-	//
-	// 	// 대대댓글의 경우 예외처리
-	// 	if(findComment.getParentCommentId() != null) {
-	// 		throw new CustomException(ErrorCode.ONE_DEPTH_ONLY);
-	// 	}
-	//
-	// 	User findUserById = userRepository.findByIdOrElseThrow(loginUserId);
-	//
-	// 	Plan findPlan = planRepository.findByIdOrElseThrow(planId);
-	//
-	// 	Comment reComment = new Comment(findUserById, findPlan, dto.getContent());
-	//
-	// 	reComment.specifyParentId(commentId);
-	//
-	// 	Comment savedReComment = commentRepository.save(reComment);
-	//
-	// 	return ReCommentCreateResponseDto.fromComment(savedReComment);
-	// }
-
-
 	/**
 	 * 전체 댓글 조회
-	 * TODO 댓글 아래에 대댓글 출력되도록 하기
+	 * 대댓글의 경우 해당 댓글의 하위에 출력된다
+	 * @param planId
 	 * @param loginUserId
-	 * @return List<CommentResponseDto>
+	 * @return
 	 */
 	@Override
 	public List<CommentResponseDto> findAll(Long planId, Long loginUserId) {
@@ -161,12 +117,13 @@ public class CommentServiceImpl implements CommentService{
 	}
 
 	/**
-	 * 댓글 수정
+	 * 댓글 및 대댓글 수정
 	 * 수정자와 작성자가 일치하지 않을 경우 USER_MISMATCH 예외 발생
+	 * @param planId
 	 * @param commentId
 	 * @param dto
 	 * @param loginUserId
-	 * @return CommentUpdateResponseDto
+	 * @return
 	 */
 	@Transactional
 	@Override
@@ -186,11 +143,12 @@ public class CommentServiceImpl implements CommentService{
 	}
 
 	/**
-	 * 댓글 삭제
-	 * 댓글 작성자가 아닐 경우 INVALID_USER 예외 발생
+	 * 댓글 및 대댓글 삭제
+	 * 작성자가 아닐 경우 INVALID_USER 예외 발생
+	 * @param planId
 	 * @param commentId
 	 * @param loginUserId
-	 * @return CommentDeleteResponseDto
+	 * @return
 	 */
 	@Transactional
 	@Override

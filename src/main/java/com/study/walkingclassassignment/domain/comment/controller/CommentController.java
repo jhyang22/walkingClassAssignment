@@ -16,13 +16,11 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.study.walkingclassassignment.common.filter.Const;
 import com.study.walkingclassassignment.domain.comment.dto.requestdto.CommentCreateRequestDto;
-import com.study.walkingclassassignment.domain.comment.dto.requestdto.ReCommentCreateRequestDto;
 import com.study.walkingclassassignment.domain.comment.dto.responsedto.CommentCreateResponseDto;
 import com.study.walkingclassassignment.domain.comment.dto.responsedto.CommentDeleteResponseDto;
 import com.study.walkingclassassignment.domain.comment.dto.responsedto.CommentResponseDto;
 import com.study.walkingclassassignment.domain.comment.dto.requestdto.CommentUpdateRequestDto;
 import com.study.walkingclassassignment.domain.comment.dto.responsedto.CommentUpdateResponseDto;
-import com.study.walkingclassassignment.domain.comment.dto.responsedto.ReCommentCreateResponseDto;
 import com.study.walkingclassassignment.domain.comment.service.CommentService;
 
 import lombok.RequiredArgsConstructor;
@@ -55,7 +53,8 @@ public class CommentController {
 
 	/**
 	 * 전체 댓글 조회
-	 * TODO 대댓글 목록 안나옴, 댓글 조회 시 작성일 기준 오름차순(오래된 순) 정렬
+	 * 대댓글의 경우 해당 댓글의 하위에 출력된다
+	 * @param planId
 	 * @param loginUserId
 	 * @return List<CommentResponseDto>
 	 */
@@ -70,12 +69,12 @@ public class CommentController {
 	}
 
 	/**
-	 * 댓글 수정
+	 * 댓글 및 대댓글 수정
 	 * @param planId
 	 * @param commentId
 	 * @param dto
 	 * @param loginUserId
-	 * @return
+	 * @return CommentUpdateResponseDto
 	 */
 	@PatchMapping("/{commentId}")
 	public ResponseEntity<CommentUpdateResponseDto> updateComment(
@@ -91,11 +90,11 @@ public class CommentController {
 	}
 
 	/**
-	 * 댓글 삭제
+	 * 댓글 및 대댓글 삭제
 	 * @param planId
 	 * @param commentId
 	 * @param loginUserId
-	 * @return
+	 * @return CommentDeleteResponseDto
 	 */
 	@DeleteMapping("/{commentId}")
 	public ResponseEntity<CommentDeleteResponseDto> deleteComment(
@@ -108,27 +107,4 @@ public class CommentController {
 
 		return new ResponseEntity<>(deletedComment, HttpStatus.OK);
 	}
-
-	// /**
-	//  * 대댓글 저장
-	//  * 1 depth만 허용
-	//  * @param planId
-	//  * @param commentId
-	//  * @param dto
-	//  * @param loginUserId
-	//  * @return
-	//  */
-	// @PostMapping("/{commentId}/recomments")
-	// public ResponseEntity<ReCommentCreateResponseDto> saveReComment (
-	// 	@PathVariable Long planId,
-	// 	@PathVariable Long commentId,
-	// 	@RequestBody ReCommentCreateRequestDto dto,
-	// 	@SessionAttribute(name = Const.LOGIN_USER, required = false) Long loginUserId
-	// ) {
-	//
-	// 	ReCommentCreateResponseDto savedReComment = commentService.saveReComment(planId, commentId, dto,
-	// 		loginUserId);
-	//
-	// 	return new ResponseEntity<>(savedReComment, HttpStatus.CREATED);
-	// }
 }
