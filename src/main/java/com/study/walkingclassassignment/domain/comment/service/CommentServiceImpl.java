@@ -9,13 +9,11 @@ import org.springframework.stereotype.Service;
 import com.study.walkingclassassignment.common.exception.CustomException;
 import com.study.walkingclassassignment.common.exception.ErrorCode;
 import com.study.walkingclassassignment.domain.comment.dto.requestdto.CommentCreateRequestDto;
-import com.study.walkingclassassignment.domain.comment.dto.requestdto.ReCommentCreateRequestDto;
 import com.study.walkingclassassignment.domain.comment.dto.responsedto.CommentCreateResponseDto;
 import com.study.walkingclassassignment.domain.comment.dto.responsedto.CommentDeleteResponseDto;
 import com.study.walkingclassassignment.domain.comment.dto.responsedto.CommentResponseDto;
 import com.study.walkingclassassignment.domain.comment.dto.requestdto.CommentUpdateRequestDto;
 import com.study.walkingclassassignment.domain.comment.dto.responsedto.CommentUpdateResponseDto;
-import com.study.walkingclassassignment.domain.comment.dto.responsedto.ReCommentCreateResponseDto;
 import com.study.walkingclassassignment.domain.comment.entity.Comment;
 import com.study.walkingclassassignment.domain.comment.repository.CommentRepository;
 import com.study.walkingclassassignment.domain.plan.entity.Plan;
@@ -82,12 +80,6 @@ public class CommentServiceImpl implements CommentService{
 	@Override
 	public List<CommentResponseDto> findAll(Long planId, Long loginUserId) {
 
-		// parentCommentId를 활용해야 할 것 같은데 어케하지
-		// parentCommentId가 없으면 그냥 출력, 있으면 parentCommentId 하위에 출력?
-		// 하위에 출력하는걸 어떻게 하지
-		// order by를 2중으로
-		// 코드 레벨에서 해결
-		// Order by Created_At DESC -> Order By parentCommentId
 		List<Comment> findAllComment = commentRepository.findAllByPlan_Id(planId);
 
 		// commentId를 key, CommentResponseDto를 value로 가지는 Map 생성
@@ -98,9 +90,6 @@ public class CommentServiceImpl implements CommentService{
 			commentMap.put(c.getId(), CommentResponseDto.fromComment(c));
 		}
 
-		// 자식들을 모두 parent에 있는 reCommentList에 삽입하는 과정
-		// 만약 댓글만 삭제하고 대댓글은 존재한다면 여기서 에러가 나는 것 같다
-		// 소프트 딜리트 해줘야 하나?
 		for(Comment c : findAllComment) {
 			if(c.getParentCommentId() != null) {
 				CommentResponseDto parentDto = commentMap.get(c.getParentCommentId());
@@ -110,10 +99,6 @@ public class CommentServiceImpl implements CommentService{
 		}
 
 		return commentMap.values().stream().toList();
-
-		// 이렇게 해도 되고 ReCommentResponseDto를 만들어서 해도 된다 어차피 parentCommentId를 제일 부모 id로 지정하기 때문에 굴레에 갖히지 않는다
-
-		// return findAllComment.stream().map(CommentResponseDto::fromComment).toList();
 	}
 
 	/**
