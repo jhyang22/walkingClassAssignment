@@ -1,15 +1,9 @@
 package com.study.walkingclassassignment.domain.plan.service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.study.walkingclassassignment.domain.comment.entity.Comment;
-import com.study.walkingclassassignment.domain.comment.repository.CommentRepository;
 import com.study.walkingclassassignment.domain.plan.dto.requestdto.PlanCreateRequestDto;
 import com.study.walkingclassassignment.domain.plan.dto.requestdto.PlanUpdateRequestDto;
 import com.study.walkingclassassignment.domain.plan.dto.responsedto.FindAllPlanResponseDto;
@@ -31,7 +25,6 @@ public class PlanServiceImpl implements PlanService{
 
 	private final PlanRepository planRepository;
 	private final UserRepository userRepository;
-	private final CommentRepository commentRepository;
 
 	/**
 	 * 일정 저장
@@ -61,9 +54,10 @@ public class PlanServiceImpl implements PlanService{
 	@Override
 	public Page<FindAllPlanResponseDto> findAll(Pageable pageable, Long loginUserId) {
 
-		Page<Plan> findAllPlan = planRepository.findAll(pageable);
+		// Page<Plan> findAllPlan = planRepository.findAll(pageable);
 
-		return findAllPlan.map(FindAllPlanResponseDto::fromPlan);
+		// return findAllPlan.map(FindAllPlanResponseDto::fromPlan);
+		return planRepository.findAllPlanWithCountComment(pageable);
 	}
 
 	/**

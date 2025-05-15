@@ -49,5 +49,4 @@ public class PlanResponseDto {
 				.collect(Collectors.toList()))
 			.build();
 	}
-
 }
