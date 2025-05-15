@@ -25,7 +25,6 @@ import com.study.walkingclassassignment.domain.comment.service.CommentService;
 
 import lombok.RequiredArgsConstructor;
 
-//TODO URL 수정으로 인한 PathVariable 추가 사항 반영해서 로직 다시 만들어야함
 @RestController
 @RequestMapping("/api/plans/{planId}/comments")
 @RequiredArgsConstructor
